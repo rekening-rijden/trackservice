@@ -17,16 +17,6 @@ variables:
 
 steps:
 
-- task: Maven@4
-  inputs:
-    mavenPomFile: 'pom.xml'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-
 - task: DockerInstaller@0
   displayName: Install Docker Agent
   inputs:
