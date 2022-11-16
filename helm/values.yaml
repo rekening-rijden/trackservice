@@ -5,14 +5,14 @@
 replicaCount: 1
 
 image:
-  repository: lucjans26/rekeningrijden-trackservice
+  repository: rekeningrijden.azurecr.io/track-service
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: "trackservice"
+fullnameOverride: "track-service"
 
 serviceAccount:
   # Specifies whether a service account should be created
