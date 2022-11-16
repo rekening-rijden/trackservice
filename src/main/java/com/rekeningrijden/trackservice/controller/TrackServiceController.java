@@ -25,7 +25,7 @@ public class TrackServiceController {
     }
 
     @GetMapping()
-    public ResponseEntity<DataPoint> StoreDataPoint() {
-        return new ResponseEntity<>(null, HttpStatus.FOUND);
+    public ResponseEntity<String> StoreDataPoint() {
+        return new ResponseEntity<>("kank", HttpStatus.FOUND);
     }
 }
