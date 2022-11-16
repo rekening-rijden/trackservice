@@ -6,7 +6,7 @@ pool:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '8488f313-05e7-4363-96f4-bb62025844cd'
+  dockerRegistryServiceConnection: '215aa6d9-bbad-4a39-8194-c3d3f73ad88c'
   imageRepository: 'track-service'
   containerRegistry: 'rekeningrijden.azurecr.io'
   dockerfilePath: '**/Dockerfile'
