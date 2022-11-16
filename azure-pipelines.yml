@@ -1,0 +1,64 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '215aa6d9-bbad-4a39-8194-c3d3f73ad88c'
+  imageRepository: 'track-service'
+  containerRegistry: 'rekeningrijden.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
+  tag: 'latest'
+
+  # Artifact variables
+  artifactName: 'track-service'
+
+steps:
+
+- task: DockerInstaller@0
+  displayName: Install Docker Agent
+  inputs:
+    dockerVersion: 17.09.0-ce
+
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+
+- task: Docker@2
+  displayName: Build Docker Image and Push to Registry
+  inputs:
+    command: buildAndPush
+    repository: $(imageRepository)
+    dockerfile: $(dockerfilePath)
+    containerRegistry: $(dockerRegistryServiceConnection)
+    tags:
+          $(tag)
+    buildContext: .
+
+- task: HelmInstaller@0
+  displayName: Install Helm Client
+  inputs:
+    helmVersion: '2.14.1'
+    installKubectl: true
+
+- task: HelmDeploy@0
+  displayName: Helm deploy
+  inputs:
+    namespace: 'deployment'
+    command: 'package'
+    chartPath: 'helm'
+
+- task: PublishBuildArtifacts@1
+  displayName: Public Build Artifact
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: $(artifactName)
+    publishLocation: 'Container'
